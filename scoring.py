@@ -30,8 +30,8 @@ def calc_score(points, hands):
     child_direct_score = ceil_score(original_child_score)
 
     parent_drown_score = ceil_score(original_parent_score / 3) # split by 3 ppl
-    child_drown_score = ceil_score(original_parent_score / 4)
-    child_drown_score_for_parent = ceil_score(original_parent_score / 2)
+    child_drown_score = ceil_score(original_child_score / 4)
+    child_drown_score_for_parent = ceil_score(original_child_score / 2)
 
     parent_score = {
         "drawn": parent_drown_score,
