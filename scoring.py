@@ -25,15 +25,16 @@ def calc_score(points, hands):
     original_score_base = points * pow(2, hands + 2)
 
     # bigger than border_point is strong winning hands
-    if original_score_base > border_point:
-        original_child_score = calc_strong_score(hands)
-        original_parent_score = original_child_score * 1.5
-    else:
+    if original_score_base < border_point:
         child_base = 4
         parent_base = child_base * 1.5
 
         original_child_score = original_score_base * child_base
         original_parent_score = original_score_base * parent_base
+
+    else:
+        original_child_score = calc_strong_score(hands)
+        original_parent_score = original_child_score * 1.5
 
     child_score = {
         "drawn": ceil_score(original_child_score / 4), # for child
