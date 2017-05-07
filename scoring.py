@@ -29,17 +29,17 @@ def calc_score(points, hands):
     parent_direct_score = ceil_score(original_parent_score)
     child_direct_score = ceil_score(original_child_score)
 
-    parent_drown_score = ceil_score(original_parent_score / 3) # split by 3 ppl
-    child_drown_score = ceil_score(original_child_score / 4)
-    child_drown_score_for_parent = ceil_score(original_child_score / 2)
+    parent_drawn_score = ceil_score(original_parent_score / 3) # split by 3 ppl
+    child_drawn_score = ceil_score(original_child_score / 4)
+    child_drawn_score_for_parent = ceil_score(original_child_score / 2)
 
     parent_score = {
-        "drawn": parent_drown_score,
+        "drawn": parent_drawn_score,
         "direct": parent_direct_score
     }
     child_score = {
-        "drawn": child_drown_score,
-        "drawn_for_parent": child_drown_score_for_parent,
+        "drawn": child_drawn_score,
+        "drawn_for_parent": child_drawn_score_for_parent,
         "direct": child_direct_score
     }
 
