@@ -17,38 +17,60 @@ def main(score_base):
     return calc_score(points, hands)
 
 def calc_score(points, hands):
-    """Calculate the oritinal score using points and hands.
+    """Calculate the original score using points and hands.
     Returned values are score containing dict object.
     """
-    parent_base = 6
-    child_base = 4
+    border_point = 2000
 
-    original_parent_score = points * parent_base * pow(2, hands + 2)
-    original_child_score = points * child_base * pow(2, hands + 2)
+    original_score_base = points * pow(2, hands + 2)
 
-    parent_direct_score = ceil_score(original_parent_score)
-    child_direct_score = ceil_score(original_child_score)
+    # bigger than border_point is strong winning hands
+    if original_score_base > border_point:
+        original_child_score = calc_strong_score(hands)
+        original_parent_score = original_child_score * 1.5
+    else:
+        child_base = 4
+        parent_base = child_base * 1.5
 
-    parent_drawn_score = ceil_score(original_parent_score / 3) # split by 3 ppl
-    child_drawn_score = ceil_score(original_child_score / 4)
-    child_drawn_score_for_parent = ceil_score(original_child_score / 2)
+        original_child_score = original_score_base * child_base
+        original_parent_score = original_score_base * parent_base
 
-    parent_score = {
-        "drawn": parent_drawn_score,
-        "direct": parent_direct_score
-    }
     child_score = {
-        "drawn": child_drawn_score,
-        "drawn_for_parent": child_drawn_score_for_parent,
-        "direct": child_direct_score
+        "drawn": ceil_score(original_child_score / 4), # for child
+        "drawn_for_parent": ceil_score(original_child_score / 2), # for parent
+        "direct": ceil_score(original_child_score)
+    }
+    parent_score = {
+        "drawn": ceil_score(original_parent_score / 3), # split by 3 children
+        "direct": ceil_score(original_parent_score)
     }
 
     score = {
-        "parent": parent_score,
         "child": child_score,
+        "parent": parent_score,
         "points": points,
         "hands": hands
     }
+
+    return score
+
+def calc_strong_score(hands):
+    """Calculate strong winning hands score.
+    This function return child score, so if you need parent score,
+    the score should be 1.5 times.
+    """
+
+    # basic point has been calcurated already, so under 5 hands are the same score
+    if hands <= 5:
+        score = 8000
+    elif hands <= 7:
+        score = 12000
+    elif hands <= 10:
+        score = 16000
+    elif hands <= 12:
+        score = 24000
+    elif hands > 12:
+        score = 32000
 
     return score
 
@@ -57,5 +79,8 @@ def ceil_score(original_score):
     return int(math.ceil(original_score / 100.0) * 100)
 
 if __name__ == '__main__':
-    DUMMY_VALUE = {"points": 30, "hands": 4}
-    print(main(DUMMY_VALUE))
+    WEEK_HANDS = {"points": 40, "hands": 2}
+    print(main(WEEK_HANDS))
+
+    STRONG_HANDS = {"points": 30, "hands": 6}
+    print(main(STRONG_HANDS))
